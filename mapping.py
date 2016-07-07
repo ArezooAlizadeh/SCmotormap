@@ -1,6 +1,7 @@
 import numpy as np
+import pylab as pl
 
-def affmapping(R, phi, A=5.3, Bu=1.8, Bv=1.8):
+def affmapping(R, phi, A=3, Bu=1.4, Bv=1.8):
 	'''
 	Afferent mapping from visual field to the collicular surface.
 
@@ -16,13 +17,11 @@ def affmapping(R, phi, A=5.3, Bu=1.8, Bv=1.8):
 	u (mm), v (mm)
 	'''
 	degphi = np.pi*phi/180
-	u = Bu*np.log2(np.sqrt(R**2+A**2+2*A*R*np.cos(degphi))/A)
+	u = Bu*np.log(np.sqrt(R**2+A**2+2*A*R*np.cos(degphi))/A)
 	v = Bv*np.arctan((R*np.sin(degphi))/(R*np.cos(degphi)+A))
 	return u, v
 
-
-
-def effmapping(u, v, eta=1, A=5.3, Bu=1.8, Bv=1.8):
+def effmapping(u, v, eta=1, A=3, Bu=1.4, Bv=1.8):
 	'''
 	Efferent mapping for horizontal and vertical components of location dependent mini-vectors.
 
@@ -40,3 +39,23 @@ def effmapping(u, v, eta=1, A=5.3, Bu=1.8, Bv=1.8):
 	x = eta*A*np.exp(u/Bu)*np.cos(v/Bv)-1
 	y = eta*A*np.exp(u/Bu)*np.sin(v/Bv)
 	return x, y
+
+def plotSCmotormap():
+	'''
+	Example function to plot SC motor map
+	'''
+	r = np.array([2, 5, 10, 30, 60, 90])
+	p = np.linspace(-90, 90, 150)
+	rr, pp = np.meshgrid(r, p)
+	uu, vv = affmapping(rr, pp)
+	pl.plot(uu, vv, 'k')
+
+	r = np.linspace(0, 90, 150)
+	p = np.linspace(-90, 90, 7)
+	rr, pp = np.meshgrid(r, p)
+	uu, vv = affmapping(rr, pp)
+	pl.plot(uu.T, vv.T, 'k')
+	
+	pl.xlabel('u (mm)')
+	pl.ylabel('v (mm)')
+	pl.title("SC motor map")
