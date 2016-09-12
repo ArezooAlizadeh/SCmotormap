@@ -1,6 +1,7 @@
 import numpy as np
 import pylab as pl
 
+
 def affmapping(R, phi, A=3, Bu=1.4, Bv=1.8):
 	'''
 	Afferent mapping from visual field to the collicular surface.
@@ -59,3 +60,9 @@ def plotSCmotormap():
 	pl.xlabel('u (mm)')
 	pl.ylabel('v (mm)')
 	pl.title("SC motor map")
+
+def empty():
+    '''
+    does nothing
+    '''
+    return 0
